@@ -3,34 +3,16 @@ import json
 def escalate_to_agent(reason=None):
     return f"Repassando para o atendente: {reason}" if reason else "Repassando para o atendente"
 
-def case_resolved():
-    return "Atendimento finalizado. Obrigado."
-
-def check_dental_plan(patient_inquiry):
+def check_dental_plan():
     """
     Função para realizar a verificação de planos odontológicos e convênios aceitos.
     
     Retorno:
     - Uma mensagem ao paciente com as informações sobre convênios aceitos ou cobertura do tratamento.
     """
-    inquiry_type = patient_inquiry.get("type")
-    treatment_name = patient_inquiry.get("treatment_name")
-    plan_name = patient_inquiry.get("plan_name")
-    
-    if inquiry_type == "accepted_insurances":
-        accepted_insurances = get_accepted_insurances()
-        return f"Os convênios aceitos pela clínica são: {', '.join(accepted_insurances)}."
-    
-    elif inquiry_type == "treatment_coverage" and treatment_name and plan_name:
-        coverage_details = get_treatment_coverage(plan_name, treatment_name)
-        if coverage_details["is_covered"]:
-            co_payment = coverage_details.get("co_payment", "nenhum")
-            return f"O tratamento '{treatment_name}' está coberto pelo seu plano '{plan_name}' com coparticipação de {co_payment}."
-        else:
-            return f"O tratamento '{treatment_name}' não está coberto pelo seu plano '{plan_name}'."
-    
-    else:
-        return escalate_to_agent()
+    accepted_insurances = get_accepted_insurances()
+    return f"Os convênios aceitos pela clínica são: {', '.join(accepted_insurances)}."
+
 
 def get_accepted_insurances():
     """
@@ -114,7 +96,7 @@ def reschedule_appointment(current_appointment, new_date, new_time):
 def check_availability():
     return True
 
-def get_alternative_dates(dentist=None):
+def get_alternative_dates():
     """
     Retorna uma lista de datas e horários alternativos disponíveis para agendamento.
     
